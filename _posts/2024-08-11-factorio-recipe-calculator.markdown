@@ -6,6 +6,7 @@ categories: factorio
 ---
 
 # Table of Contents
+1. [Article update history](#article-update-history)
 1. [Welcome to blog](#welcome-to-blog)
 1. [User stories](#user-stories)
 1. [Planner structure](#planner-structure)
@@ -18,7 +19,12 @@ categories: factorio
    1. [Kirk McDonald's Calculator](#kirk-mcdonalds-calculator)
    1. [FactorioLab](#factoriolab)
    1. [Helmod](#helmod)
+1. [Inner workings](#inner-workings)
 1. [Conclusions](#conclusions)
+
+# Article update history
+
+- Update 1 (24.11.2024): Added [Inner workings](#inner-workings) section.
 
 # Welcome to blog
 
@@ -142,6 +148,53 @@ Helmod gives all freedom to user. User can select what recipes to use, machines 
 ![Image](/assets/Factorio-recipe-calculator/Helmod 1.png)
 
 ![Image](/assets/Factorio-recipe-calculator/Helmod 2.png)
+
+# Inner workings
+
+Crafting speed and productivity modifier of a machine with modules can be calculated as:
+
+$$
+c = c_b ( 1 + \sum_{i=1}^N s_i / 100 )
+$$
+
+$$
+p =  1 + \sum_{i=1}^N p_i / 100
+$$
+
+where
+
+$$ c_b $$ - base crafting speed of a machine
+
+$$ s_i $$ - speed modifier of module i in percents (as shown by the game)
+
+$$ p_i $$ - productivity modifier of module i in percents
+
+$$ N $$ - amount of modules
+
+$$ c $$ - Crafting speed of a machine with modules
+
+$$ p $$ - productivity modifier of a machine with modules
+
+Having these, we can estimate final resource consumption or production of a production block by the following formula:
+
+$$
+R = \frac{Mc(o - i)} {d}
+\begin{cases} p,& \text{if o > i},\\
+1,& \text{if o < i}.
+\end{cases}
+$$
+
+where
+
+$$ R $$ - resource consumption/production rate. r < 0 means resource is consumed, > 0 - produced.
+
+$$ M $$ - machine count
+
+$$ d $$ - recipe duration in seconds
+
+$$ i $$ - number of resource units that are input to the given recipe
+
+$$ o $$ - number of resource units that are output of the given recipe
 
 # Conclusions
 
